@@ -42,6 +42,7 @@ public class SceneControl : MonoBehaviour
 
     private IEnumerator SceneTransition()
     {
+        // "loading" ui fade in
         canvasGroup.gameObject.SetActive(true);
         canvasGroup.alpha = 0;
         var targetTime = Time.time + 1.5f;
@@ -52,13 +53,20 @@ public class SceneControl : MonoBehaviour
             playerCamera.fieldOfView += 60f * Time.deltaTime/1.5f;
             playerCamera.transform.Translate(Vector3.forward* (12.52f*Time.deltaTime/1.5f),Space.Self);
         }
-
+        //unload current space scene
         var scene = SceneManager.GetActiveScene();
         var sceneToLoad = scene.buildIndex != sceneB ? sceneB : sceneA;
         yield return SceneManager.UnloadSceneAsync(scene);
+        
+        //reset player position for orientation
         playerBody.MovePosition(Vector3.zero);
+        
+        //load next space scene
         yield return SceneManager.LoadSceneAsync(sceneToLoad,LoadSceneMode.Additive);
+        // need to set scene activiate so the skybox will take effect
         SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(sceneToLoad));
+        
+        // "loading" ui fade out
         targetTime = Time.time + 1.5f;
         while (Time.time < targetTime)
         {
