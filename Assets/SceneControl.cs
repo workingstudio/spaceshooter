@@ -11,6 +11,7 @@ public class SceneControl : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Rigidbody playerBody;
     [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private PlayerCamera playerCameraControl;
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -43,11 +44,13 @@ public class SceneControl : MonoBehaviour
     {
         canvasGroup.gameObject.SetActive(true);
         canvasGroup.alpha = 0;
-        while (canvasGroup.alpha < 1)
+        var targetTime = Time.time + 1.5f;
+        while (Time.time < targetTime)
         {
             yield return null;
-            canvasGroup.alpha += 0.6f * Time.deltaTime;
-            playerCamera.fieldOfView += 10f * Time.deltaTime;
+            canvasGroup.alpha += Time.deltaTime/1.5f;
+            playerCamera.fieldOfView += 60f * Time.deltaTime/1.5f;
+            playerCamera.transform.Translate(Vector3.forward* (12.52f*Time.deltaTime/1.5f),Space.Self);
         }
 
         var scene = SceneManager.GetActiveScene();
@@ -56,13 +59,14 @@ public class SceneControl : MonoBehaviour
         playerBody.MovePosition(Vector3.zero);
         yield return SceneManager.LoadSceneAsync(sceneToLoad,LoadSceneMode.Additive);
         SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(sceneToLoad));
-        while (canvasGroup.alpha > 0)
+        targetTime = Time.time + 1.5f;
+        while (Time.time < targetTime)
         {
             yield return null;
-            playerCamera.fieldOfView -= 10f * Time.deltaTime;
-            canvasGroup.alpha -= 0.6f * Time.deltaTime;
+            canvasGroup.alpha += Time.deltaTime/-1.5f;
+            playerCamera.fieldOfView += 60f * Time.deltaTime/-1.5f;
+            playerCamera.transform.Translate(Vector3.forward* (-12.52f*Time.deltaTime/1.5f),Space.Self);
         }
         canvasGroup.gameObject.SetActive(false);
-
     }
 }
