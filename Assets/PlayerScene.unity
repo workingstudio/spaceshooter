@@ -302,6 +302,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86912a58412ea4b2594a85e88e4b58eb, type: 3}
+--- !u!54 &892156554 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 1274315835772601350, guid: 86912a58412ea4b2594a85e88e4b58eb, type: 3}
+  m_PrefabInstance: {fileID: 892156553}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &893668773
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,7 +545,7 @@ MonoBehaviour:
   sceneA: 1
   sceneB: 2
   playerCamera: {fileID: 318544729}
-  playerBody: {fileID: 0}
+  playerBody: {fileID: 892156554}
   canvasGroup: {fileID: 910243939}
 --- !u!4 &1661876747
 Transform:
